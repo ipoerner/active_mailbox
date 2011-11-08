@@ -1,6 +1,6 @@
 = ActiveMailbox
 
-    <http://www.github.com/ipoerner/>
+    <http://www.github.com/ipoerner/active_mailbox/>
 
     Ingmar Poerner   maintainer
 
@@ -65,7 +65,7 @@ Just contact me via Github or ipoerner<at>gmail<dot>com
 
 == INSTALLATION:
 
-No way to install so far. Fixing major bugs has a priority for now.
+No way to install so far. Fixing critical bugs is a priority for me right now.
 
 == LICENSE:
 
