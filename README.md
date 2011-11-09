@@ -1,10 +1,13 @@
-= ActiveMailbox
+ActiveMailbox
+=============
 
-    <http://www.github.com/ipoerner/active_mailbox/>
+<http://www.github.com/ipoerner/active_mailbox/>
 
-    Ingmar Poerner   maintainer
+Ingmar Poerner - maintainer
 
-== DESCRIPTION:
+
+Description
+-----------
 
 ActiveMailbox aims to provide easy, object-oriented access to IMAP mailboxes
 from within Ruby applications.
@@ -20,54 +23,70 @@ using it.
 
 Well then, godspeed to myself :-)
 
-== DOCUMENTATION:
+
+Documentation
+-------------
 
 The place you will want to look first is the ActiveMailbox::Base class.
 
-== FEATURES/PROBLEMS:
+
+Features/Problems
+-----------------
 
 This is still a development version. There's plenty of problems.
 
-== SYNOPSIS:
+
+Synopsis
+--------
 
 Quick example of usage, i.e.
 
-  require 'active_mailbox'
-  
-  class MyClass < ActiveMailbox::Base
-	folder_class :default
-	message_class :default
-	authenticate_through MyAuthenticatorClass
-  end
-  
-  ...
-  
-  MyClass.establish_connection(connection_id)
-  
-  ...
-  
-  folder = MyClass::ImapMessage.find(connection_id, folder_id)
-  message = MyClass::ImapMessage.find(connection_id, folder.path, message_id)
-  
-  ...
-  
-  MyClass.disconnect!(connection_id)
+```ruby
+require 'active_mailbox'
 
-== CONTRIBUTING:
+class MyClass < ActiveMailbox::Base
+  folder_class :default
+  message_class :default
+  authenticate_through MyAuthenticatorClass
+end
+
+...
+
+MyClass.establish_connection(connection_id)
+
+...
+
+folder = MyClass::ImapMessage.find(connection_id, folder_id)
+message = MyClass::ImapMessage.find(connection_id, folder.path, message_id)
+
+...
+
+MyClass.disconnect!(connection_id)
+```
+
+
+Contributing
+------------
 
 Just contact me via Github or ipoerner<at>gmail<dot>com
 
-== REQUIREMENTS:
+
+Requirements
+------------
 
 * Ruby 1.8
 * RMail/TMail libraries
 * OpenSSL library
 
-== INSTALLATION:
+
+Installation
+------------
 
 No way to install so far. Fixing critical bugs is a priority for me right now.
 
-== LICENSE:
+
+License
+-------
 
 Copyright (c) 2011 Ingmar Poerner
 
