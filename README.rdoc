@@ -1,13 +1,10 @@
-ActiveMailbox
-=============
+= ActiveMailbox
 
 <http://www.github.com/ipoerner/active_mailbox/>
 
 Ingmar Poerner - maintainer
 
-
-Description
------------
+== Description
 
 ActiveMailbox aims to provide easy, object-oriented access to IMAP mailboxes
 from within Ruby applications.
@@ -23,70 +20,55 @@ using it.
 
 Well then, godspeed to myself :-)
 
-
-Documentation
--------------
+== Documentation
 
 The place you will want to look first is the ActiveMailbox::Base class.
 
-
-Features/Problems
------------------
+== Features/Problems
 
 This is still a development version. There's plenty of problems.
 
-
-Synopsis
---------
+== Synopsis
 
 Quick example of usage, i.e.
 
-```ruby
-require 'active_mailbox'
+  require 'active_mailbox'
 
-class MyClass < ActiveMailbox::Base
-  folder_class :default
-  message_class :default
-  authenticate_through MyAuthenticatorClass
-end
+  class MyClass < ActiveMailbox::Base
+    folder_class :default
+    message_class :default
+    authenticate_through MyAuthenticatorClass
+  end
 
-...
+  ...
 
-MyClass.establish_connection(connection_id)
+  MyClass.establish_connection(connection_id)
 
-...
+  ...
 
-folder = MyClass::ImapMessage.find(connection_id, folder_id)
-message = MyClass::ImapMessage.find(connection_id, folder.path, message_id)
+  folder = MyClass::ImapMessage.find(connection_id, folder_id)
+  message = MyClass::ImapMessage.find(connection_id, folder.path, message_id)
 
-...
+  ...
 
-MyClass.disconnect!(connection_id)
-```
+  MyClass.disconnect!(connection_id)
 
-
-Contributing
-------------
+== Contributing
 
 Just contact me via Github or ipoerner<at>gmail<dot>com
 
-
-Requirements
-------------
+== Requirements
 
 * Ruby 1.8
 * RMail/TMail libraries
 * OpenSSL library
 
+== Installation
 
-Installation
-------------
+No specific way of installation so far. Fixing critical bugs is a priority for
+me right now.
 
-No way to install so far. Fixing critical bugs is a priority for me right now.
-
-
-License
--------
+== License
 
 Copyright (c) 2011 Ingmar Poerner
 
