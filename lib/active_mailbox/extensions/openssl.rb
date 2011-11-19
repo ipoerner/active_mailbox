@@ -1,8 +1,8 @@
-module Buffering #:nodoc:
-  alias_method :close_buffer, :close
-end
-
 module OpenSSL #:nodoc:
+
+  module Buffering #:nodoc:
+    alias_method :close_buffer, :close
+  end
   
   module SSL #:nodoc:
     
