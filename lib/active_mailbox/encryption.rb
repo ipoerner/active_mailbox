@@ -26,7 +26,7 @@ module ActiveMailbox
       # Create a pseudo-random string of length +len+.
       
       def random_string(len)
-        1.upto(len).collect { |i| STANDARD_CHARS[rand(STANDARD_CHARS.length)] }.join
+        (1..len).to_a.collect { |i| STANDARD_CHARS[rand(STANDARD_CHARS.length)] }.join
       end
       
       # Create an AES key with +bitlength+ number of bits, based on a secret key +key+.
