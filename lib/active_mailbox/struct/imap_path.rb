@@ -85,7 +85,7 @@ module ActiveMailbox
             if @name.empty?
               @level < imap_path.level
             else
-              imap_path.path.start_with?(path + @delimiter)
+              imap_path.path.starts_with?(path + @delimiter)
             end
           when String
             superior_to?(self.class.new(imap_path, @delimiter))

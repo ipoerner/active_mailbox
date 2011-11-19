@@ -12,8 +12,8 @@ module ActiveMailbox
         def strip_char(separator)
           str = self
           if RUBY_VERSION >= "1.9"
-            str[0]            = "" while str.start_with?(separator)
-            str[str.length-1] = "" while str.end_with?(separator)
+            str[0]            = "" while str.starts_with?(separator)
+            str[str.length-1] = "" while str.ends_with?(separator)
           else
             str[0]            = "" while (str.index(separator) == 0)
             str[str.length-1] = "" while (str.index(separator,-1) == str.length-1)
