@@ -1,3 +1,5 @@
+require 'active_mailbox/connection_adapters/abstract/abstract_adapter'
+
 module ActiveMailbox
   
   module ConnectionAdapters
