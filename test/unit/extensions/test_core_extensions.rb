@@ -24,13 +24,10 @@ module TestNumericExtensions
   def test_numeric_bytes_to_str
     TestHelper::Output.puts_test_log("Numberic bytes_to_str")
     
-    assert_numeric(0, 0)
+    assert_numeric(0,0)
     
     for multiplier in 0..6 do
-      range = (1024**multiplier)...(1024**(multiplier+1))
-      range.step(range.last/8) do |i|
-        assert_numeric(i, multiplier)
-      end
+      assert_numeric((1024**multiplier), multiplier)
     end
   end
   
