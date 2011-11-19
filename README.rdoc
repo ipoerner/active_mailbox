@@ -59,7 +59,7 @@ Just contact me via Github or ipoerner<at>gmail<dot>com
 
 == Requirements
 
-* Ruby 1.8.6-p420
+* Ruby 1.8.7-p352
 * openssl lib
 * rmail gem v1.0.0
 * tmail gem v1.2.3.1
