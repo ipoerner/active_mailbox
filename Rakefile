@@ -30,9 +30,8 @@ TEST_DIRS = %w[unit functional]
 Rake::TestTask.new do |t|
   t.libs << "test"
   t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.compact
-  #t.options = "--verbose=verbose"
+  t.options = "--verbose=verbose"
   t.verbose = true
-  t.loader  = :direct
 end
 
 if RUBY_VERSION < "1.9"
