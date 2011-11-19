@@ -66,7 +66,7 @@ Just contact me via Github or ipoerner<at>gmail<dot>com
 * rake gem v0.8.7
 * rdoc gem v2.4.3
 * rcov gem v0.9.6
-* active_support v1.4.4
+* active_support v2.0.0
 
 == Installation
 
