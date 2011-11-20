@@ -1,0 +1,143 @@
+= Test Configuration
+
+Description of config files for the ActiveMailbox test suite.
+
+== Overview
+
+The ActiveMailbox test suite requires a couple of configuration files in order
+to perform all of the available tests at least once.
+
+Configuration files - what for? Well for one thing, some of the unit tests work
+on a set of test fixtures and a config file can tell them if they have
+successfully parsed a mailbox file, for instance.
+
+But also, since ActiveMailbox is a library that operates on one or more data
+sources (or IMAP servers, to be more specific), the path to these sources must
+be provided in order to test the core functionality of the library.
+
+IMAP servers in particular require a user to LOGIN prior to (mostly) anything
+else, and thus a username+password combination is required in order to access a
+mailbox.
+
+And last but not least, enabling and disabling specific tests is currently
+accomplished by adding this information to the config files. Note: this may
+be subject to future changes.
+
+== Unit Tests
+
+The configuration file for unit tests is called unit.yml and should follow the
+following pattern:
+
+  # Unit test config starts here
+  unit:
+
+    # RMail extensions require a test fixture in form of an mbox file
+    rmail:
+
+      # This is the name of the mbox file in the test/fixtures/ folder
+      mbox: rmail_mbox
+
+      # This is the number of messages in the mbox file to check against
+      length: 5
+
+    # This section specifies the unit tests to execute
+    test:
+
+      # Test core extensions (String, Numeric, Array, Hash)
+      core: true
+
+      # Test other extensions (currently only extensions to the RMail library)
+      extensions: true
+
+You can actually use this snippet as a template as the fixture file is currently
+static and should be part of the Git repository.
+
+== Functional Tests
+
+Functional tests require two different configuration files: a file named
+accounts.yml where a number of IMAP accounts are enlisted, and a file named
+functional.yml which contains the actual configuration for the functional tests.
+
+Lets begin with the content of functional.yml:
+
+  # Functional test config starts here
+  functional:
+
+    # This is the filename of a message stub that's supposed to be located in
+    # the test/fixtures/ folder. It's used to test CRUD operations.
+    stub: message_stub
+
+    # Set this to 'true' in order to enable the debug mode of the Net::IMAP
+    # library. Will provide you with detailed live dump of the complete IMAP
+    # protocol exchange when running functional tests.
+    debug: false
+
+    # This section specifies the functional tests to execute
+    test:
+
+      # Basic connectivity and timeout tests.
+      connection: true
+
+      # Test IMAP folder class
+      folders: true
+
+      # Test IMAP message class
+      messages: true
+
+    # A list of IMAP servers to test. Each server runs through the whole set
+    # of functional tests.
+    hosts:
+
+      # The identifier of an IMAP server from accounts.yml
+      - "gmail"
+
+As with unit.yml, you can use this snippet as a template for your own config.
+Just make sure that the list of hosts corresponds with your accounts.yml .
+
+Speaking of which, here's what accounts.yml is supposed to look like:
+
+  # This is the identifier of the first account
+  gmail:
+
+    # This is the account type. Currently, 'imap' is the only reasonable value
+    type: imap
+
+    # The username that you want to login with
+    user: john.doe
+
+    # The password you want to login with. Currently, this is the AES-encrypted
+    # form of the password that's internally used throughout ActiveMailbox.
+    # This may change in future versions, but for now please refer to the
+    # ActiveMailbox configuration docs for more information
+    password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    # This is the host address of the IMAP server
+    host: imap.googlemail.com
+
+    # This is the (preferred) authentication method to use. This can either be
+    # 'PLAIN', 'LOGIN', or 'CRAM-MD5' and must be supported by the server. Most
+    # common should be 'LOGIN'
+    authentication: LOGIN
+
+    # The mail address which your account is registered for. Unfortunately, this
+    # can't always be created reliably from the upper information. Some servers
+    # require you to specify the "From:" header field when creating messages in
+    # a folder though
+    address: john.doe@gmail.com
+
+    # A number of special folders to use for the tests
+    folders:
+
+      # Specify a path to folder that may contain one or more subfolders
+      writeable: active_mailbox
+
+      # Specify a path to a folder that can't be created, i.e. because it's
+      # nested too deep
+      protected: active_mailbox/foo/foo/foo/foo/foo/foo/foo
+
+  # This is the identifier of the second account
+  foo:
+    ...
+
+The folder options in this file may become optional at some point, but the tests
+won't succeed without them for now.

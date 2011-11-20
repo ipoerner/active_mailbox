@@ -60,6 +60,7 @@ end
 Rake::RDocTask.new do |rdoc|
   rdoc.title = "Active Mailbox - Easy access to IMAP mailboxes in Ruby"
   rdoc.rdoc_files.include("README.rdoc")
+  rdoc.rdoc_files.include("test/config/README.rdoc")
   rdoc.rdoc_files.include("./lib/**/*.rb")
 end
 
