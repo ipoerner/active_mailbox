@@ -59,14 +59,20 @@ Just contact me via Github or ipoerner<at>gmail<dot>com
 
 == Requirements
 
-* Ruby 1.8.7-p352
-* openssl lib
-* rmail gem v1.0.0
-* tmail gem v1.2.3.1
-* rake gem v0.8.7
-* rdoc gem v2.4.3
-* rcov gem v0.9.6
-* active_support v2.0.0
+Make sure you have Ruby 1.8.7 on the latest patchlevel installed. Also, OpenSSL
+version 0.9.8k or higher is mandatory.
+
+As far as other dependencies are concerned, here's a list of gems to install:
+
+gem install activesupport -v 2.0.0
+gem install rake -v 0.8.7
+gem install rcov -v 0.9.6
+gem install rdoc -v 2.4.3
+gem install rmail -v 1.0.0
+gem install tmail -v 1.2.3.1
+
+I'm working on catching up with newer versions of all gems, so that list
+represents a rather ephemeral state of things.
 
 == Installation
 
