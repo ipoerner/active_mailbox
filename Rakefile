@@ -40,7 +40,7 @@ if RUBY_VERSION < "1.9"
     t.libs << %w(lib)
     t.libs << %w(test)
     t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.flatten
-    t.output_dir = "test/coverage"
+    t.output_dir = "coverage"
     t.verbose = true
     t.rcov_opts << '--exclude "' + RUBY_LIBS + '"'
   end
