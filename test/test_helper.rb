@@ -86,7 +86,12 @@ module TestHelper
       end
       
       def unit(field = nil)
-        @@unit ||= load(:unit)
+	cfg_data = load(:unit)
+        @@unit ||= if cfg_data
+	  cfg_data
+	else
+	  Hash.new
+	end
         if @@unit.has_key?("unit")
           (field.nil?) ? @@unit["unit"] : @@unit["unit"][field]
         else
@@ -95,30 +100,40 @@ module TestHelper
       end
       
       def functional(field = nil)
-        @@functional ||= load(:functional)
-        if @@functional.has_key?("functional")
-          (field.nil?) ? @@functional["functional"] : @@functional["functional"][field]
-        else
-          nil
-        end
+	cfg_data = load(:functional)
+        @@functional ||= if cfg_data
+	  cfg_data
+	else
+	  Hash.new
+	end
+	if @@functional.has_key?("functional")
+	  (field.nil?) ? @@functional["functional"] : @@functional["functional"][field]
+	else
+	  nil
+	end
       end
       
       def accounts
-        @@accounts ||= load(:accounts).collect { |key, value|
-          if value["type"].to_sym == :imap
-            login_data = { :name           => key,
-                           :host           => value["host"],
-                           :user           => value["user"],
-                           :authentication => value["authentication"],
-                           :encrypted_pwd  => value["password"],
-                           :use_ssl        => value["use_ssl"] != false,
-                           :address        => value["address"] || value["user"],
-                           :adapter        => value["adapter"]
-            }
-            
-            { :login_data => login_data, :folders => value["folders"] }
-          end
-        }.compact
+	cfg_data = load(:accounts)
+        @@accounts ||= if cfg_data
+	  cfg_data.collect { |key, value|
+	    if value["type"].to_sym == :imap
+	      login_data = { :name           => key,
+			    :host           => value["host"],
+			    :user           => value["user"],
+			    :authentication => value["authentication"],
+			    :encrypted_pwd  => value["password"],
+			    :use_ssl        => value["use_ssl"] != false,
+			    :address        => value["address"] || value["user"],
+			    :adapter        => value["adapter"]
+	      }
+	      
+	      { :login_data => login_data, :folders => value["folders"] }
+	    end
+	  }.compact
+        else
+	  Hash.new
+	end
       end
       
       private
