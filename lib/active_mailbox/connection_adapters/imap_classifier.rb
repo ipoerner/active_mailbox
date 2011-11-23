@@ -47,7 +47,11 @@ module ActiveMailbox
         # Retrieve known vendors.
         
         def vendors
-          @@vendors.keys
+	  if @@vendors
+            @@vendors.keys
+          else
+            []
+          end
         end
         
         # Retrieve fingerprints associated with a specific IMAP server.
