@@ -66,7 +66,7 @@ understand the last config file in this directory.
 == Vendor List
 
 The list of known vendors basically lists all known IMAP server types, and since
-the type of IMAP server is what we're relly interested in, it also brings
+the type of IMAP server is what we're really interested in, it also brings
 together the information from the upper two files.
 
 Each IMAP server type ("vendor") is listed along with multiple lists of IMAP
