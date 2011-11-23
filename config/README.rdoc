@@ -1,0 +1,109 @@
+= Active Mailbox Configuration
+
+Description of the main config file for the ActiveMailbox library.
+
+== Overview
+
+Various configuration options are available when using Active Mailbox. Most of
+these options exist to solve connection timeout issues, but also one of the key
+components of the lib - the IMAP server classification engine - allows for some
+tweaks to avoid superfluous classification attempts or adjust specific
+parameters of the algorithms.
+
+The main configuration file for Active Mailbox must named active_mailbox.yml.
+Here's a quick overview about it's components that you can use to create your
+own config from:
+
+  # This is the private key which is used to internally encrypt all your
+  # passwords. It's basically a 256 bit AES key that's encoded as a hex value.
+  # It should thus be 64 characters long and only consist of random 'hex' chars.
+  # DO NOT USE THIS EXAMPLE KEY IN A PRODUCTION ENVIRONMENT!
+  secret_key: 0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF
+
+  # This section contains anything related to connection management
+  connection:
+
+    # When connecting to a serer, this is how the lib will behave
+    connect:
+
+      # The number of consecutive connection attempts
+      attempts: 3
+
+      # The number of seconds after which a connection attempt will be aborted
+      timeout: 5.seconds
+
+      # The time between two connection attempts
+      delay: 2.seconds
+
+    # When logging in, this is how the lib will behave
+    login:
+
+      # The number of consecutive login attempts
+      attempts: 2
+
+      # The number of seconds after which a login attempt will be aborted.
+      timeout: 8.seconds
+
+      # The time between two login attempts
+      delay: 1.seconds
+
+    # The frequency of the connection observer checking for broken connections.
+    # This routine is scheduled regularily in order to terminate idle
+    # connections
+    observer_interval: 10.seconds
+
+    # The time it takes for a single IMAP request to time out. A value of '0'
+    # (zero) means no timeout. Any request will be terminated if it takes longer
+    # than that.
+    task_timeout: 0
+
+    # The time it takes for an IMAP connection to time out. A value of '0'
+    # (zero) means no timeout. The connection will be terminated when there has
+    # been no activity on the connection for that amount of time.
+    connection_timeout: 10.minutes
+
+    # The time it takes for an IMAP session to time out. A value of '0' (zero)
+    # means no timeout. Any objects that are related to a specific connection,
+    # including cached usernames and passwords, will be terminated when there
+    # has not been any activity on a connection for that amount of time.
+    session_timeout: 30.minutes
+
+  # This part covers the classification engine configuration
+  classification:
+
+    # There are various methods of classification available. Some of them may
+    # be switched of if they are not used, which will probably speed up
+    # the connection making. Have a look at config/classifcation/README.rdoc for
+    # more information
+    methods:
+
+      # Use the list of known hosts to identify an IMAP server. This is the
+      # recommended way if you really know your target server(s).
+      known_hosts: true
+
+      # Identify a server using its initial welcome message. Quite a lot of
+      # servers include some vendor information in this message
+      server_responses: true
+
+      # The list of server capabilities may also be an indicator of the server
+      # type, but it requires a rather sophisticated list of server capabilities
+      # to be halway reliable
+      server_capabilities: true
+
+    # Configuration of the "capability list" classificator. This is rather
+    # technical and should only be modified if you think that it will improve
+    # the algorithm for your specific use case
+    capability_classifier:
+
+      # Minimum number of results to form a valid group
+      min_quantity: 5
+
+      # Maximum distance in order to count as "neighbour"
+      max_distance: 3
+
+      # Minimum number of neighbours to qualify as "successfully classified"
+      number_of_neighbours: 3
+
+This may seem like an awful lot of configuration, but I plan to provide some
+helper scripts that will ease the creation of AES keys and guide a user through
+the creation of a reasonable config.
