@@ -4,6 +4,42 @@ require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 
+desc "Generate AES encryption key to use in configuration"
+task :generate_aes_key do
+  require 'lib/active_mailbox'
+  puts "New AES key: " + ActiveMailbox::KeyGenerator.sha2_hash
+end
+
+desc "Encrypt passphrase for use in configuration"
+task :encrypt_passphrase do
+  require 'readline'
+  require 'lib/active_mailbox'
+  begin
+    aes_key = Readline.readline("Please enter your AES key: ", false)
+    aes_key = ActiveMailbox::KeyGenerator.aes_key(aes_key)
+    str = Readline.readline("Please enter your plain passphrase: ", false)
+    str = ActiveMailbox::AESEncryption.encrypt(aes_key, str)
+    puts "Encrypted passphrase: " + str
+  rescue
+    puts "Encryption failed!"
+  end
+end
+
+desc "Decrypt passphrase used in configuration"
+task :decrypt_passphrase do
+  require 'readline'
+  require 'lib/active_mailbox'
+  begin
+    aes_key = Readline.readline("Please enter your AES key: ", false)
+    aes_key = ActiveMailbox::KeyGenerator.aes_key(aes_key)
+    str = Readline.readline("Please enter your encrypted passphrase: ", false)
+    str = ActiveMailbox::AESEncryption.decrypt(aes_key, str)
+    puts "Plain passphrase: " + str
+  rescue
+    puts "Decryption failed!"
+  end
+end
+
 if RUBY_VERSION < "1.9"
   require 'rcov/rcovtask'
   RUBY_LIBS = "/usr/local/lib/site_ruby/1.8/"
