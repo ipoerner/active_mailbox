@@ -39,9 +39,21 @@ module ActiveMailbox
         # Load information needed for the classification from config files.
         
         def load_config!
-          @@hosts        ||= YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_HOSTS))
-          @@capabilities ||= YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_CAPABILITIES))
-          @@vendors      ||= YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_VENDORS))
+	  @@hosts ||= begin
+	    YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_HOSTS))
+	  rescue Errno::ENOENT
+	    Hash.new
+	  end
+          @@capabilities ||= begin
+	    YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_CAPABILITIES))
+	  rescue Errno::ENOENT
+	    Hash.new
+	  end
+          @@vendors ||= begin
+	    YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_VENDORS))
+	  rescue Errno::ENOENT
+	    Hash.new
+	  end
         end
         
         # Retrieve known vendors.

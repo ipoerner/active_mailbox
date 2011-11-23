@@ -3,7 +3,7 @@ module ActiveMailbox
   module ParseYAMLValue #:nodoc:
     
     DEFAULTS = {
-      "secret_key" => "",
+      "secret_key" => "0000000000000000000000000000000000000000000000000000000000000000",
       "verbose" => false,
       
       "connection" => {
@@ -95,7 +95,12 @@ module ActiveMailbox
       # Loads a custom configuration file.
       
       def load_config!
-        __load_config( DEFAULTS.merge(YAML.load(File.open(CONFIG_DIR + GLOBAL_CONFIG))) )
+	cfg_data = begin
+	  YAML.load(File.open(CONFIG_DIR + GLOBAL_CONFIG))
+	rescue Errno::ENOENT
+	  Hash.new
+	end
+	__load_config(DEFAULTS.merge(cfg_data))
       end
       
       # Loads the default configuration.

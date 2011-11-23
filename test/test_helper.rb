@@ -124,7 +124,11 @@ module TestHelper
       private
       
       def yaml_read(filename)
-        YAML.load(File.open(CONFIG_DIR + filename))
+	begin
+	  YAML.load(File.open(CONFIG_DIR + filename))
+	rescue Errno::ENOENT
+	  Hash.new
+	end
       end
       
     end
