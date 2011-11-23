@@ -7,7 +7,8 @@ library.
 
 The IMAP server classification is a key component of the Active Mailbox library,
 because IMAP servers are plenty and most of them have their very own attitude
-considering standards :) To make things worse, only very few are open source.
+towards so-called "standards" :) To make things worse, only very few are open
+source.
 
 In order to deal with these problems, Active Mailbox attempts to provide
 adapters for the most common IMAP server types. Alas, there's no reliable way to
