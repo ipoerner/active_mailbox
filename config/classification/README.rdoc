@@ -66,13 +66,13 @@ understand the last config file in this directory.
 == Vendor List
 
 The list of known vendors basically lists all known IMAP server types, and since
-the type of IMAP server is what we're relly interested in, it brings together
-the information from the upper two files.
+the type of IMAP server is what we're relly interested in, it also brings
+together the information from the upper two files.
 
-Each IMAP server type ("vendor") is listed along with a list of IMAP
+Each IMAP server type ("vendor") is listed along with multiple lists of IMAP
 capabilities and all hosts which are know to belong to this specific type. The
-list of capabilities is not necessarily identical for all IMAP servers of this
-specific type though - you can think of it as a "fingerprint" for now.
+capability lists have been acquired earlier from different IMAP servers of the
+same type - you can think of them as a "fingerprint" for this vendor.
 
 It may look as follows:
 
@@ -100,8 +100,8 @@ It may look as follows:
     :hosts: [4, 9, 10, 14, 23, 25, 40, 44, 45, 47, 48, 55, 57]
 
 See how the pseudo-ids from the other two files reappear in this list? This can
-be considered a really poor example of ERM. Anyway, it should be obvious now
-that it would be a pain to maintain these files by hand. With that in mind, you
-may wonder why it's YAML then. I wish I knew. One idea of mine is to put all of
-this information into a single file, get rid of the pseudo-ids altogether, and
-provide a tool to auto-generate that config asap.
+be considered a really poor implementation of ERM. Anyway, it should be obvious
+now that it would be a pain to maintain these files by hand. With that in mind,
+you may wonder why it's YAML then. I wish I knew. One idea of mine however is to
+put all of this information into a single file, get rid of the pseudo-ids
+altogether, and provide a tool to auto-generate these entries asap.
