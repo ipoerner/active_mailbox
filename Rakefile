@@ -8,13 +8,13 @@ require 'rake/rdoctask'
 # Encryption helper
 #
 
-desc "Generate AES encryption key to use in configuration"
+desc "Generate AES encryption key to use in main configuration file"
 task :generate_aes_key do
   require 'lib/active_mailbox'
   puts "New AES key: " + ActiveMailbox::KeyGenerator.sha2_hash
 end
 
-desc "Encrypt passphrase for use in configuration"
+desc "Encrypt passphrase for use in test configuration files"
 task :encrypt_passphrase do
   require 'readline'
   require 'lib/active_mailbox'
@@ -29,7 +29,7 @@ task :encrypt_passphrase do
   end
 end
 
-desc "Decrypt passphrase used in configuration"
+desc "Decrypt passphrase used in test configuration files"
 task :decrypt_passphrase do
   require 'readline'
   require 'lib/active_mailbox'
