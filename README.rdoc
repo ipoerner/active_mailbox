@@ -20,15 +20,7 @@ using it.
 
 Well then, godspeed to myself :-)
 
-== Documentation
-
-The place you will want to look first is the ActiveMailbox::Base class.
-
-== Features/Problems
-
-This is still a development version. There's plenty of problems.
-
-== Synopsis
+== Getting Started
 
 Quick example of usage, i.e.
 
@@ -55,7 +47,12 @@ Quick example of usage, i.e.
 
 == Contributing
 
-Just contact me via Github or ipoerner<at>gmail<dot>com
+I'd be happy if you want to contribute! Just contact me via Github or directly
+at ipoerner_at_gmail_dot_com
+
+== Documentation
+
+The place you probably want to look first is the ActiveMailbox::Base class.
 
 == Requirements
 
@@ -64,21 +61,16 @@ version 0.9.8k or higher is mandatory.
 
 As far as other dependencies are concerned, here's a list of gems to install:
 
-gem install activesupport -v 2.0.0
-gem install rake -v 0.8.7
-gem install rcov -v 0.9.6
-gem install rdoc -v 2.4.3
-gem install rmail -v 1.0.0
-gem install tmail -v 1.2.3.1
+* gem install rake -v 0.8.7
+* gem install activesupport -v 2.0.0
+* gem install rmail -v 1.0.0
+* gem install tmail -v 1.2.3.1
 
 I'm working on catching up with newer versions of all gems, so that list
 represents a rather ephemeral state of things.
 
-== Installation
-
-No specific way of installation so far. Fixing critical bugs is a priority for
-me right now.
-
 == License
+
+ActiveMailbox is released under the MIT license.
 
 :include: LICENSE
