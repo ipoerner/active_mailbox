@@ -4,6 +4,10 @@ require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 
+#
+# Encryption helper
+#
+
 desc "Generate AES encryption key to use in configuration"
 task :generate_aes_key do
   require 'lib/active_mailbox'
@@ -40,6 +44,20 @@ task :decrypt_passphrase do
   end
 end
 
+#
+# Testing
+#
+
+#TEST_DIRS = %w[unit integration functional]
+TEST_DIRS = %w[unit functional]
+
+Rake::TestTask.new do |t|
+  t.libs << "test"
+  t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.compact
+  t.options = "--verbose=verbose"
+  t.verbose = true
+end
+
 if RUBY_VERSION < "1.9"
   require 'rcov/rcovtask'
   RUBY_LIBS = "/usr/local/lib/site_ruby/1.8/"
@@ -55,23 +73,7 @@ else
   task :default => [ :test ]
 end
 
-#
-# Tests
-#
-
-#TEST_DIRS = %w[unit integration functional]
-TEST_DIRS = %w[unit functional]
-
-# traditional Rake Tests
-Rake::TestTask.new do |t|
-  t.libs << "test"
-  t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.compact
-  t.options = "--verbose=verbose"
-  t.verbose = true
-end
-
 if RUBY_VERSION < "1.9"
-  # Rcov tests
   Rcov::RcovTask.new do |t|
     t.libs << %w(lib)
     t.libs << %w(test)
@@ -82,13 +84,6 @@ if RUBY_VERSION < "1.9"
   end
 end
 
-##
-## Distribution
-##
-#
-#task :dist => [:repackage, :gem, :rdoc]
-#task :distclean => [:clobber_package, :clobber_rdoc]
-#
 ##
 ## Documentation
 ##
@@ -107,7 +102,7 @@ end
 ## 
 
 spec = Gem::Specification.new do |s|
-   s.platform    = Gem::Platform::RUBY
+   s.platform = Gem::Platform::RUBY
    s.name = "activemailbox"
    s.version = "0.0.3"
    s.summary = "Object-oriented approach to IMAP mailboxes."
@@ -123,21 +118,46 @@ spec = Gem::Specification.new do |s|
    s.require_path = 'lib'
 
    s.extra_rdoc_files = %w( README.rdoc )
-   s.rdoc_options.concat ['--main', 'README.rdoc']
+   s.rdoc_options.concat(['--main', 'README.rdoc'])
 
-   s.add_dependency 'activesupport', '= 2.0.0'
-   s.add_dependency 'rmail', '= 1.0.0'
-   s.add_dependency 'tmail', '= 1.2.3.1'
+   s.add_dependency('activesupport', '= 2.0.0')
+   s.add_dependency('rmail', '= 1.0.0')
+   s.add_dependency('tmail', '= 1.2.3.1')
 end
 
 Rake::GemPackageTask.new(spec) do |p|
   p.gem_spec = spec
 end
 
-# #Rake::PackageTask.new(spec.name, spec.version) do |p|
-# #    p.need_tar_gz = true
-# #    p.need_zip = true
-# #    p.package_files.include("./lib/**/*.rb")
-# #    p.package_files.include("Rakefile")
-# #    p.package_files.include("./test/**/*")
-# #end
+SRCS = FileList['./**', './lib/**/*', "./config/**/*", "./test/**/*"]
+Rake::PackageTask.new(spec.name, spec.version) do |p|
+   p.need_tar_gz = true
+   p.need_zip = true
+   SRCS.exclude('.git')
+   SRCS.exclude('.gitignore')
+   SRCS.exclude('*.patch')
+   SRCS.exclude('./config/*.yml')
+   SRCS.exclude('./config/classification/*.yml')
+   SRCS.exclude('./test/config/*.yml')
+   SRCS.exclude('./coverage')
+   SRCS.exclude('./html')
+   SRCS.exclude('./pkg')
+   p.package_files.include(SRCS)
+end
+
+##
+## Distribution
+##
+
+desc "Create distribution (packaging & documentation)"
+task :dist => [:repackage, :gem, :rdoc]
+
+desc "Cleanup distribution"
+task :distclean => [:clobber_package, :clobber_rdoc]
+
+##
+## Misc
+##
+
+desc "Cleanup everything"
+task :clean => [:distclean, :clobber_rcov]
