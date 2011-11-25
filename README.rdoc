@@ -10,15 +10,11 @@ ActiveMailbox aims to provide easy, object-oriented access to IMAP mailboxes
 from within Ruby applications.
 
 It's a project I've started a couple of years ago, and unfortunately I've
-abandoned it since then. Now it doesn't seem to work with any Ruby version that
-I tried. Uploading this to Github is a first step in sorting out these issues
-and taking up from where I left back then.
+abandoned it since then. Currently it works only with Ruby 1.8.7 and depends
+on gem versions from back then.
 
-It's not usable in its current form, and even when I get it back working there
-will still remain a couple of issues until somebody can seriously consider
-using it.
-
-Well then, godspeed to myself :-)
+However, I'm about to bring it back to present tense and have planned a number
+of improvements to make this lib useful for others, too.
 
 == Getting Started
 
