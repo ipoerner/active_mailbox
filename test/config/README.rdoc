@@ -107,8 +107,10 @@ Speaking of which, here's what accounts.yml is supposed to look like:
 
     # The password you want to login with. Currently, this is the AES-encrypted
     # form of the password that's internally used throughout ActiveMailbox.
-    # This may change in future versions, but for now please refer to the
-    # ActiveMailbox configuration docs for more information
+    # This may change in future versions, but for now you have to use
+    # 'rake encrypt_passphrase' to create the encrypted password string to use
+    # here. Also, the corresponding AES key must be present in the main config
+    # file 'config/active_mailbox.yml'
     password: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
     # This is the host address of the IMAP server

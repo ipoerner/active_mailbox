@@ -17,7 +17,10 @@ own config from:
   # This is the private key which is used to internally encrypt all your
   # passwords. It's basically a 256 bit AES key that's encoded as a hex value.
   # It should thus be 64 characters long and only consist of random 'hex' chars.
-  # DO NOT USE THIS EXAMPLE KEY IN A PRODUCTION ENVIRONMENT!
+  #
+  # !DO NOT USE THIS EXAMPLE KEY IN A PRODUCTION ENVIRONMENT!
+  #
+  # You can generate your own key using 'rake generate_aes_key'
   secret_key: 0000111122223333444455556666777788889999AAAABBBBCCCCDDDDEEEEFFFF
 
   # This section contains anything related to connection management
