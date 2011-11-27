@@ -20,7 +20,7 @@ require 'active_mailbox/struct'
 require 'active_mailbox/base'
 require 'active_mailbox/imap_folder'
 require 'active_mailbox/imap_message'
-require 'external/read_write_lock'
+require 'active_mailbox/external/read_write_lock'
 require 'active_mailbox/connection_adapters'
 $:.shift
 
