@@ -95,12 +95,12 @@ module ActiveMailbox
       # Loads a custom configuration file.
       
       def load_config!
-	cfg_data = begin
-	  YAML.load(File.open(CONFIG_DIR + GLOBAL_CONFIG))
-	rescue Errno::ENOENT
-	  Hash.new
-	end
-	__load_config(DEFAULTS.merge(cfg_data))
+        cfg_data = begin
+          YAML.load(File.open(CONFIG_DIR + GLOBAL_CONFIG))
+        rescue Errno::ENOENT
+          Hash.new
+        end
+        __load_config(DEFAULTS.merge(cfg_data))
       end
       
       # Loads the default configuration.

@@ -19,15 +19,14 @@ class FunctionalTestSuite
         if config.has_key?("test")
           TestDomainClasses.include_modules(config["test"])
         end
-	
-	def mysuite.run(*args)
-	  @@hosts.each do |host|
-	    self << TestDomainClasses.named_suite(host)
-	  end
-	  
-	  super
-	end
-	
+        
+        def mysuite.run(*args)
+          @@hosts.each do |host|
+            self << TestDomainClasses.named_suite(host)
+          end
+          
+          super
+        end
       end
       
       return mysuite
