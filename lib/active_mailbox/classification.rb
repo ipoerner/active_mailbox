@@ -17,81 +17,66 @@ module ActiveMailbox
       include ResponseClassifier
       include CapabilityClassifier
       
-      # Directory that contains the classification config files.
-      
-      CLASSIFICATION_DIR  = "config/classification/"
-      
-      # Config file for server capabilities (should be in YAML format).
-      
-      CONFIG_CAPABILITIES = "capabilities.yml"
-      
-      # Config file for known hosts (should be in YAML format).
-      
-      CONFIG_HOSTS        = "hosts.yml"
-      
-      # Config file for known vendors (should be in YAML format).
-      
-      CONFIG_VENDORS      = "vendors.yml"
-      
       # List of hosts that crash the protocol when an attempt is made to logout without being logged in.
       
       LOGOUT_NOT_ALLOWED  = %w(imap.laposte.net)
       
       attr_reader :host, :capabilities, :greeting_response, :bye_response
       
+      @@fingerprints = Hash.new
+      @@hosts = Hash.new
+      @@vendors = Array.new
+      
       class << self
         
-        # Load information needed for the classification from config files.
+        # Add new fingerprint to the list of known fingerprints.
         
-        def load_config!
-          @@hosts ||= begin
-            YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_HOSTS))
-          rescue Errno::ENOENT
-            Hash.new
+        def add_fingerprint(fingerprint,vendor)
+          add_vendor(vendor)
+          unless @@fingerprints.has_key?(vendor)
+            @@fingerprints[vendor] = [ fingerprint ]
+          else
+            @@fingerprints[vendor] << fingerprint
           end
-          @@capabilities ||= begin
-            YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_CAPABILITIES))
-          rescue Errno::ENOENT
-            Hash.new
+          return true
+        end
+        
+        # Add new host to the list of known hosts.
+        
+        def add_host(host,vendor)
+          if @@hosts.has_key?(host)
+            return false
           end
-          @@vendors ||= begin
-            YAML.load(File.open(CLASSIFICATION_DIR + CONFIG_VENDORS))
-          rescue Errno::ENOENT
-            Hash.new
+          add_vendor(vendor)
+          @@hosts[host] = @@vendors.find { |v| v == vendor }
+          return true
+        end
+        
+        # Add new vendor to the list of known vendors.
+        
+        def add_vendor(vendor)
+          unless @@vendors.include?(vendor)
+            @@vendors << vendor
           end
+          return true
+        end
+        
+        # Retrieve known fingerprints.
+        
+        def fingerprints
+          @@fingerprints
+        end
+        
+        # Retrieve known hosts.
+        
+        def hosts
+          @@hosts
         end
         
         # Retrieve known vendors.
         
         def vendors
-          if @@vendors
-            @@vendors.keys
-          else
-            []
-          end
-        end
-        
-        # Retrieve fingerprints associated with a specific IMAP server.
-        
-        def fingerprints(key)
-          unless @@vendors[key].nil? || (capability_lists = @@vendors[key][:capabilities]).nil?
-            capability_lists.collect { |capability_ids|
-              # get real names of capabilities and create ImapCapabilityArray
-              Base::ImapCapabilityArray.new(capability_ids.collect { |id| @@capabilities[id] })
-            }
-          else
-            []
-          end
-        end
-        
-        # Retrieve all hosts associated with a specific IMAP server.
-        
-        def hosts(key)
-          unless @@vendors[key].nil?
-            @@vendors[key][:hosts].collect { |id| @@hosts[id] }
-          else
-            []
-          end
+          @@vendors
         end
         
       end
@@ -210,5 +195,3 @@ module ActiveMailbox
   end
   
 end
-
-ActiveMailbox::Classification::ImapClassifier.load_config!

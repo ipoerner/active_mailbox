@@ -37,9 +37,10 @@ module ActiveMailbox
       private
       
       def distances_to_vendor(server_capabilities, vendor)
-        unless (fp = self.class.fingerprints(vendor)).nil?
+        unless self.class.fingerprints[vendor].nil?
           # calculate distances and delete object if distance is not good enough
-          fp.collect { |f|
+          self.class.fingerprints[vendor].collect { |fp|
+            f = Base::ImapCapabilityArray.new(fp)
             { :distance => f.distance(server_capabilities), :vendor => vendor }
           }.delete_if { |d| d[:distance] >= config.capability_classifier.max_distance }
         end

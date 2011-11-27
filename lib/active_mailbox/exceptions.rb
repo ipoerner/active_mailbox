@@ -9,6 +9,13 @@ module ActiveMailbox
     
     
     
+    # Generic Configuration error.
+    
+    class ConfigurationError < ActiveMailboxError
+    end
+    
+    
+    
     # Indicates that an abstract method has been called. Since there's no such thing as an
     # abstract method in Ruby, this exception is used to emulate the behaviour. Usually appears
     # if some classes have not been specialized correctly by the application using Active Mailbox.

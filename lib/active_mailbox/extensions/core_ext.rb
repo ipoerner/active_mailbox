@@ -41,24 +41,6 @@ module ActiveMailbox
         
       end
       
-      module Array #:nodoc:
-        
-        if RUBY_VERSION < "1.8.7"
-          
-          def shuffle!
-            size.downto(1) { |n| push(delete_at(rand(n))) }
-            self
-          end
-          
-          def shuffle
-            s = self
-            s.shuffle!
-          end
-          
-        end
-        
-      end
-      
       module Hash #:nodoc:
         
         def assert_valid_keys(*valid_keys)

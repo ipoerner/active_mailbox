@@ -11,10 +11,8 @@ module ActiveMailbox
       # A ClassificationFailed error is raised if the classification failed.
       
       def classify_by_host_address(host_address)
-        self.class.vendors.each do |vendor|
-          if hosts = self.class.hosts(vendor)
-            hosts.each { |host| return vendor if (host == host_address) }
-          end
+        if vendor = self.class.hosts[host_address]
+          return vendor
         end
         raise Errors::ClassificationFailed
       end
