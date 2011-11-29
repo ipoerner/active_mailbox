@@ -4,10 +4,6 @@ Dir.glob(File.join(File.dirname(__FILE__), 'extensions/*.rb')).each {|f| require
 # Core extensions
 #
 
-class Array #:nodoc:
-  include ActiveMailbox::Extensions::Core::Array
-end
-
 class Hash #:nodoc:
   include ActiveMailbox::Extensions::Core::Hash
 end
