@@ -105,22 +105,8 @@ spec = eval(File.read('activemailbox.gemspec'))
 
 Rake::GemPackageTask.new(spec) do |p|
   p.gem_spec = spec
-end
-
-SRCS = FileList['./**', './lib/**/*', "./config/**/*", "./test/**/*"]
-Rake::PackageTask.new(spec.name, spec.version) do |p|
-   p.need_tar_gz = true
-   p.need_zip = true
-   SRCS.exclude('.git')
-   SRCS.exclude('.gitignore')
-   SRCS.exclude('*.patch')
-   SRCS.exclude('./config/*.yml')
-   SRCS.exclude('./config/classification/*.yml')
-   SRCS.exclude('./test/config/*.yml')
-   SRCS.exclude('./coverage')
-   SRCS.exclude('./html')
-   SRCS.exclude('./pkg')
-   p.package_files.include(SRCS)
+  p.need_tar = true
+  p.need_zip = true
 end
 
 ##
