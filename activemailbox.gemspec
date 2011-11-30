@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
    s.summary = "Object-oriented approach to IMAP mailboxes."
    s.description = "ActiveMailbox aims to provide easy, object-oriented access to IMAP mailboxes from within Ruby applications."
 
-   s.required_ruby_version = '= 1.8.7'
+   s.required_ruby_version = '~> 1.8.7'
 
    s.author = "Ingmar Poerner"
    s.email = "ipoerner@gmail.com"
