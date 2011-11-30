@@ -84,7 +84,7 @@ own config from:
       # recommended way if you really know your target server(s).
       known_hosts: true
 
-      # Identify a server using its initial welcome message. Quite a lot of
+      # Identify a server using its initial greeting response. Quite a lot of
       # servers include some vendor information in this message
       server_responses: true
 
@@ -110,3 +110,62 @@ own config from:
 This may seem like an awful lot of configuration, but I plan to provide some
 helper scripts that will ease the creation of AES keys and guide a user through
 the creation of a reasonable config.
+
+== Classification
+
+The IMAP server classification is a key component of the Active Mailbox library,
+because IMAP servers are plenty and most of them have their very own attitude
+towards so-called "standards" :) To make things worse, only very few are open
+source.
+
+In order to deal with these problems, Active Mailbox attempts to provide
+adapters for the most common IMAP server types. Alas, there's no reliable way to
+determine the type of IMAP server you're dealing with! Currently, one of the
+following approaches is chosen to identify the server type:
+
+1. Look into a list of already known and "verified" IMAP servers
+2. Attempt to find a hint in the servers greeting response
+3. Make an educated guess using a servers list of IMAP capabilities
+
+All that information is kept in another configuration file called
+classification.yml. NOTE: This configuration file will soon be auto-generated
+and maintained using dedicated tools, but for now it must be edited by hand.
+
+The general layout of this file looks like this:
+
+  ---
+  -
+    :id: <vendor-name>
+    :hosts: [ <host-list> ]
+    :capabilities:
+      - [ <capability-list> ]
+      - [ <capability-list> ]
+      ...
+  -
+    :id: <vendor-name>
+    ...
+
+Let's see what should be put inside those arrow brackets. The <vendor-name>
+should be a unique identifier of the IMAP server type. It must correspond with
+the String that's returned by the connection adapter's 'adapter_name' method.
+For instance, the adapter class for Courier IMAP servers, namely
+ActiveMailbox::ConnectionAdapters::CourierAdapter, is identified by the string
+"Courier", and thus the <vendor-name> to that IMAP server type must be "Courier"
+as well.
+
+The <host-list> should a comma-separated list of host addresses which are known
+to belong to this specific category of IMAP servers. It's not mandatory, but
+it's very likely that at least one host address is known if the IMAP server has
+an entry in the list.
+
+A <capability-list> represents a comma-seperated list of IMAP capabilities which
+have been observed at any IMAP server of that type. As shown above, there can
+be multiple lists of capabilities. A server will provide its list of
+capabilities mostly prior to logging in, and using some simple pattern matching,
+this information can possibly be used to successfully identify the type of an
+IMAP server as previously noted.
+
+Creating and maintaining a this file is rather tedious, of course. Apart from
+automating this process using tools, it's also planned to put up a public
+repository where users can submit and share known hosts and capability lists
+in order to build up a small "database" when can then be used as a start.
