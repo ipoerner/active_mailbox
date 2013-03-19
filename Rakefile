@@ -48,14 +48,28 @@ end
 # Testing
 #
 
-#TEST_DIRS = %w[unit integration functional]
-TEST_DIRS = %w[unit functional]
+UNIT_TESTS = 'test/unit/unit.rb'
+FUNCTIONAL_TESTS = 'test/functional/functional.rb'
 
-Rake::TestTask.new do |t|
+Rake::TestTask.new("test:unit") do |t|
   t.libs << "test"
-  t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.compact
   t.options = "--verbose=verbose"
   t.verbose = true
+  t.test_files = FileList[UNIT_TESTS]
+end
+
+Rake::TestTask.new("test:functional") do |t|
+  t.libs << "test"
+  t.options = "--verbose=verbose"
+  t.verbose = true
+  t.test_files = FileList[FUNCTIONAL_TESTS]
+end
+
+Rake::TestTask.new("test:all") do |t|
+  t.libs << "test"
+  t.options = "--verbose=verbose"
+  t.verbose = true
+  t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
 end
 
 if RUBY_VERSION < "1.9"
@@ -77,7 +91,7 @@ if RUBY_VERSION < "1.9"
   Rcov::RcovTask.new do |t|
     t.libs << %w(lib)
     t.libs << %w(test)
-    t.test_files = TEST_DIRS.collect { |target| FileList["test/#{target}/#{target}.rb"] }.flatten
+    t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
     t.output_dir = "coverage"
     t.verbose = true
     t.rcov_opts << '--exclude "' + RUBY_LIBS + '"'
