@@ -48,55 +48,60 @@ end
 # Testing
 #
 
-UNIT_TESTS = 'test/unit/unit.rb'
-FUNCTIONAL_TESTS = 'test/functional/functional.rb'
+namespace :test do
+  UNIT_TESTS = 'test/unit/unit.rb'
+  FUNCTIONAL_TESTS = 'test/functional/functional.rb'
 
-Rake::TestTask.new("test:unit") do |t|
-  t.libs << "test"
-  t.options = "--verbose=verbose"
-  t.verbose = true
-  t.test_files = FileList[UNIT_TESTS]
-end
+  Rake::TestTask.new(:unit) do |t|
+    t.libs << "test"
+    t.options = "--verbose=verbose"
+    t.verbose = true
+    t.test_files = FileList[UNIT_TESTS]
+  end
 
-Rake::TestTask.new("test:functional") do |t|
-  t.libs << "test"
-  t.options = "--verbose=verbose"
-  t.verbose = true
-  t.test_files = FileList[FUNCTIONAL_TESTS]
-end
+  Rake::TestTask.new(:functional) do |t|
+    t.libs << "test"
+    t.options = "--verbose=verbose"
+    t.verbose = true
+    t.test_files = FileList[FUNCTIONAL_TESTS]
+  end
 
-Rake::TestTask.new("test:all") do |t|
-  t.libs << "test"
-  t.options = "--verbose=verbose"
-  t.verbose = true
-  t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
-end
+  Rake::TestTask.new(:all) do |t|
+    t.libs << "test"
+    t.options = "--verbose=verbose"
+    t.verbose = true
+    t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
+  end
 
-if RUBY_VERSION < "1.9"
-  require 'rcov/rcovtask'
-  RUBY_LIBS = "/usr/local/lib/site_ruby/1.8/"
-  task :default => [ :rcov ]
-else
-  module Rcov
-    class RcovTask
-      def initialize(&block)
-        raise Exception, "Abstract method call!"
+  if RUBY_VERSION < "1.9"
+    require 'rcov/rcovtask'
+    RUBY_LIBS = "/usr/local/lib/site_ruby/1.8/"
+    task :default => [ :rcov ]
+  else
+    module Rcov
+      class RcovTask
+        def initialize(&block)
+          raise Exception, "Abstract method call!"
+        end
       end
     end
+    task :default => [ :test ]
   end
-  task :default => [ :test ]
+
+  if RUBY_VERSION < "1.9"
+    Rcov::RcovTask.new do |t|
+      t.libs << %w(lib)
+      t.libs << %w(test)
+      t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
+      t.output_dir = "coverage"
+      t.verbose = true
+      t.rcov_opts << '--exclude "' + RUBY_LIBS + '"'
+    end
+  end
 end
 
-if RUBY_VERSION < "1.9"
-  Rcov::RcovTask.new do |t|
-    t.libs << %w(lib)
-    t.libs << %w(test)
-    t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
-    t.output_dir = "coverage"
-    t.verbose = true
-    t.rcov_opts << '--exclude "' + RUBY_LIBS + '"'
-  end
-end
+task :test => 'test:default'
+task :default => :test
 
 ##
 ## Documentation
