@@ -20,4 +20,7 @@ Gem::Specification.new do |s|
    s.add_dependency('activesupport', '= 2.0.0')
    s.add_dependency('rmail', '= 1.0.0')
    s.add_dependency('tmail', '= 1.2.3.1')
+
+   s.add_development_dependency('rake', '0.8.7')
+   s.add_development_dependency('rcov')
 end
