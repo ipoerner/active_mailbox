@@ -66,17 +66,11 @@ namespace :test do
     t.test_files = FileList[FUNCTIONAL_TESTS]
   end
 
-  Rake::TestTask.new(:all) do |t|
-    t.libs << "test"
-    t.options = "--verbose=verbose"
-    t.verbose = true
-    t.test_files = FileList[UNIT_TESTS,FUNCTIONAL_TESTS]
-  end
+  task :all => [:unit, :functional]
 
   if RUBY_VERSION < "1.9"
     require 'rcov/rcovtask'
     RUBY_LIBS = "/usr/local/lib/site_ruby/1.8/"
-    task :default => [ :rcov ]
   else
     module Rcov
       class RcovTask
@@ -85,7 +79,6 @@ namespace :test do
         end
       end
     end
-    task :default => [ :test ]
   end
 
   if RUBY_VERSION < "1.9"
@@ -100,7 +93,7 @@ namespace :test do
   end
 end
 
-task :test => 'test:default'
+task :test => 'test:unit'
 task :default => :test
 
 ##
